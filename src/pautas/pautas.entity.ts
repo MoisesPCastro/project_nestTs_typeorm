@@ -5,6 +5,12 @@ import {
   CreateDateColumn,
 } from "typeorm";
 
+enum StatusPauta {
+  NAO_INICIADA = "Sessão não iniciada",
+  INICIADA = "Sessão iniciada",
+  ENCERRADA = "Pauta encerrada",
+}
+
 @Entity()
 export class Pauta {
   @PrimaryGeneratedColumn()
@@ -23,6 +29,23 @@ export class Pauta {
   fechamento?: Date;
 
   obterStatus(): string {
-    return "sem status";
+    if (this.fechamento && this.fechamento < new Date()) return StatusPauta.ENCERRADA;
+    if(this.abertura) return StatusPauta.INICIADA
+    return StatusPauta.NAO_INICIADA
+  }
+
+  public isFoiIniciada(): boolean {
+    return this.isInStatus(StatusPauta.INICIADA);
+  }
+  public isFoiEncerrada(): boolean {
+    return this.isInStatus(StatusPauta.ENCERRADA);
+  }
+  public isIniciarSessao(): boolean {
+    return this.isInStatus(StatusPauta.NAO_INICIADA);
+  }
+
+  public isInStatus(statusVerificar: StatusPauta): boolean {
+    const status = this.obterStatus();
+    return status == statusVerificar;
   }
 }

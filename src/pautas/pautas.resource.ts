@@ -9,6 +9,9 @@ export class PautasResource {
   descricao: string;
   status: string;
 }
+export class INovaSessaoResource {
+  minutos: number;
+}
 
 export const toRepresentation = (entity: Pauta): PautasResource => {
   const resource = new PautasResource();
