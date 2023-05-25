@@ -24,7 +24,7 @@ export class PautasService implements IPautaService {
       })
     )
       return new Result(null, new Error("pauta existente!"));
-
+    //
     const result = await this.pautaRepository.save(pauta);
     return new Result(result, null);
   }
